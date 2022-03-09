@@ -1,16 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { AbstractEntity } from 'src/common/entities/abstract.entity';
+import { Entity, Column } from 'typeorm';
 
-@Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+@Entity('users')
+export class User extends AbstractEntity {
   @Column()
   firstName: string;
 
   @Column()
   lastName: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  constructor(partial: Partial<User>) {
+    super();
+    Object.assign(this, partial);
+  }
 }

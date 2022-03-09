@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -12,23 +12,33 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return createUserDto;
+  async createAsync(createUserDto: CreateUserDto) {
+    const user = this.usersRepository.create(createUserDto);
+    await this.usersRepository.save(user);
+    return user;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAllAsync() {
+    const users = await this.usersRepository.find();
+    return users;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findByIdAsync(id: User['id']) {
+    const user = await this.usersRepository.findOne(id);
+    if (!user) throw new NotFoundException(`User not found`);
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async updateAsync(id: User['id'], updateUserDto: UpdateUserDto) {
+    const user = await this.findByIdAsync(id);
+
+    const updatedUser = this.usersRepository.merge(user, updateUserDto);
+    await this.usersRepository.save(updatedUser);
+    return updatedUser;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async removeAsync(id: User['id']) {
+    await this.findByIdAsync(id);
+    await this.usersRepository.softDelete(id);
   }
 }
