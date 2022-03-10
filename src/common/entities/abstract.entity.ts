@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   CreateDateColumn,
   DeleteDateColumn,
@@ -17,6 +18,7 @@ export abstract class AbstractEntity {
   @UpdateDateColumn({ name: 'updated_at' })
   update_at: Date;
 
+  @Exclude()
   @DeleteDateColumn({ name: 'deleted_at' })
   deleteAt: Date;
 
