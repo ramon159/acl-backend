@@ -16,13 +16,13 @@ require('dotenv').config();
 //   },
 // };
 module.exports = {
-  type: process.env.CONNECTION,
-  host: process.env.HOST,
+  type: process.env.DB_CONNECTION,
+  host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  username: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
-  synchronize: process.env.SYNCHRONIZE,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  synchronize: process.env.DB_SYNCHRONIZE,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
   cli: {
