@@ -7,11 +7,16 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  DefaultValuePipe,
+  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 @ApiTags('users')
@@ -27,20 +32,30 @@ export class UsersController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Retorna uma lista de usuários' })
+  @ApiOperation({ summary: 'Retorna uma lista de usuários paginada' })
   @ApiResponse({
     status: 200,
     description: 'Lista de usuários retornada com sucesso',
   })
-  async findAll() {
-    return await this.usersService.findAllAsync();
+  @ApiQuery({ name: 'limit', type: Number })
+  @ApiQuery({ name: 'page', type: Number })
+  async index(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+  ): Promise<Pagination<User>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.usersService.paginateAsync({
+      page,
+      limit,
+      route: '/users',
+    });
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna um usuário' })
   @ApiResponse({ status: 201, description: 'Um usuário retornado com sucesso' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
-  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+  async show(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.usersService.findByIdAsync(id);
   }
 
