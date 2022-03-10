@@ -11,7 +11,7 @@ import {
   ParseIntPipe,
   Query,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
@@ -20,7 +20,7 @@ import { User } from './entities/user.entity';
 
 @Controller('users')
 @ApiTags('users')
-export class UsersController {
+export class UserController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()

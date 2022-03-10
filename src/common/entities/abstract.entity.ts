@@ -13,10 +13,10 @@ export abstract class AbstractEntity {
   id: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  update_at: Date;
+  updateAt: Date;
 
   @Exclude()
   @DeleteDateColumn({ name: 'deleted_at' })

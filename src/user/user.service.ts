@@ -11,7 +11,7 @@ import {
 } from 'nestjs-typeorm-paginate';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     @InjectRepository(User)
     private repo: Repository<User>,
