@@ -24,21 +24,25 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Adiciona um novo usuário' })
-  @ApiResponse({ status: 201, description: 'Novo usuário criado com sucesso' })
-  @ApiResponse({ status: 400, description: 'Parâmetros inválidos' })
+  /* #region swagger */
+  @ApiOperation({ summary: 'Add a new user' })
+  @ApiResponse({ status: 201, description: 'a user has been added' })
+  @ApiResponse({ status: 400, description: 'Invalid Parameters' })
+  /* #endregion */
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.userService.createAsync(createUserDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Retorna uma lista de usuários paginada' })
+  /* #region  swagger */
+  @ApiOperation({ summary: 'Returns a user paged list' })
   @ApiResponse({
     status: 200,
-    description: 'Lista de usuários retornada com sucesso',
+    description: 'users returned successfully',
   })
   @ApiQuery({ name: 'limit', type: Number })
   @ApiQuery({ name: 'page', type: Number })
+  /* #endregion */
   async index(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
@@ -52,20 +56,24 @@ export class UserController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Retorna um usuário' })
-  @ApiResponse({ status: 201, description: 'Um usuário retornado com sucesso' })
-  @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
+  /* #region  swagger */
+  @ApiOperation({ summary: 'Return a user' })
+  @ApiResponse({ status: 201, description: 'A user returned successfully' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  /* #endregion */
   async show(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.userService.findByIdAsync(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Atualiza um usuário' })
+  /* #region  swagger */
+  @ApiOperation({ summary: 'Update a user' })
   @ApiResponse({
     status: 200,
-    description: 'Um usuário atualizado com sucesso',
+    description: 'A user has been updated',
   })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
+  /* #endregion */
   async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -74,9 +82,11 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Deleta um usuário' })
-  @ApiResponse({ status: 200, description: 'Usuário deletado com sucesso' })
-  @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
+  /* #region  swagger */
+  @ApiOperation({ summary: 'Delete a user' })
+  @ApiResponse({ status: 200, description: 'A user was deleted' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  /* #endregion */
   async remove(@Param('id', new ParseUUIDPipe()) id: string) {
     await this.userService.removeAsync(id);
   }
