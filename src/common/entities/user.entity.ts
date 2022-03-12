@@ -1,16 +1,17 @@
 import { Exclude } from 'class-transformer';
 import { AbstractEntity } from 'src/common/entities/abstract.entity';
-import { Role } from 'src/api/role/entities/role.entity';
-import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
-import { Permission } from 'src/api/permission/entities/permission.entity';
+import { Role } from 'src/common/entities/role.entity';
+import { Entity, Column, ManyToMany, JoinTable, Index } from 'typeorm';
+import { Permission } from 'src/common/entities/permission.entity';
 
 @Entity('users')
 export class User extends AbstractEntity {
   @Column()
+  @Index({ unique: true })
   username: string;
 
-  @Exclude()
   @Column()
+  @Exclude()
   password: string;
 
   @ManyToMany(() => Role)

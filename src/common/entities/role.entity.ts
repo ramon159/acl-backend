@@ -1,4 +1,4 @@
-import { Permission } from 'src/api/permission/entities/permission.entity';
+import { Permission } from 'src/common/entities/permission.entity';
 import { AbstractEntity } from 'src/common/entities/abstract.entity';
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 

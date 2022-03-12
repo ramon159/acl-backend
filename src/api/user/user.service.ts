@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindConditions, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { User } from '../../common/entities/user.entity';
 import {
   paginate,
   Pagination,
@@ -29,6 +29,11 @@ export class UserService {
 
   async findByIdAsync(id: User['id']) {
     const user = await this.repo.findOne(id);
+    if (!user) throw new NotFoundException(`User not found`);
+    return user;
+  }
+  async findOneAsync(username: User['username']) {
+    const user = await this.repo.findOne({ where: { username } });
     if (!user) throw new NotFoundException(`User not found`);
     return user;
   }

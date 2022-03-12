@@ -16,7 +16,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { User } from './entities/user.entity';
+import { User } from '../../common/entities/user.entity';
 
 @Controller('users')
 @ApiTags('users')
@@ -51,18 +51,18 @@ export class UserController {
     return this.userService.paginateAsync({
       page,
       limit,
-      route: '/users',
+      route: process.env.URL_BASE + '/users',
     });
   }
 
-  @Get(':id')
+  @Get(':username')
   /* #region  swagger */
   @ApiOperation({ summary: 'Return a user' })
   @ApiResponse({ status: 201, description: 'A user returned successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
   /* #endregion */
-  async show(@Param('id', new ParseUUIDPipe()) id: string) {
-    return await this.userService.findByIdAsync(id);
+  async show(@Param('username') username: string) {
+    return await this.userService.findOneAsync(username);
   }
 
   @Patch(':id')
