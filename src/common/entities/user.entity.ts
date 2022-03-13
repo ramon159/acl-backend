@@ -6,6 +6,9 @@ import { Permission } from 'src/common/entities/permission.entity';
 
 @Entity('users')
 export class User extends AbstractEntity {
+  // @Column()
+  // fullname: string;
+
   @Column()
   @Index({ unique: true })
   username: string;
